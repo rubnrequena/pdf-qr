@@ -21,7 +21,7 @@ export class AppService {
       const pdfDoc = await PDFDocument.load(pdfBytes);
 
       const pages = pdfDoc.getPages();
-      const pageIndex = qrOptions.page >= 0 ? qrOptions.page : pages.length - Math.abs(qrOptions.page);
+      const pageIndex = qrOptions.page >= 0 ? qrOptions.page - 1 : pages.length - Math.abs(qrOptions.page);
       if (pageIndex < 0) {
         return reject('La pagina seleccionada no existe')
       }
