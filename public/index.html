@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
+
+  <title>QR Sign PDF</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+  <div class="container" style="padding-top:20px;">
+    <h2 style="text-align: center;">QR Sign PDF</h2>
+    <form class="card p-2" enctype="multipart/form-data" method="POST" action="/">
+      <div class="input-group">
+        <input type="file" name="pdf" class="form-control" placeholder="PDF">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-secondary">Send</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="qr">QR Payload <span class="text-muted">(Required)</span></label>
+        <input type="qr" name="payload" class="form-control" id="qr" placeholder="kubide.es">
+      </div>
+      <div class="mb-3">
+        <label class="label">Location:</label>
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="number" class="form-control" name="x" min="0" placeholder="x">
+          </div>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" name="y" min="0" placeholder="y">
+          </div>
+        </div>
+        <small class="text-muted">Leave blank to calculate center of the page.</small>
+      </div>
+      <div class="mb-3">
+        <label for="scale" class="label">Scale:</label>
+        <input id="scale" type="number" class="form-control" name="scale" min="0" max="3" step="any" value="1">
+      </div>
+      <div class="mb-3">
+        <label for="page" class="label">Page:</label>
+        <input id="page" type="number" class="form-control" name="page" value="0">
+        <small class="text-muted">Use negative numbers to start count from last page.</small>
+      </div>
+    </form>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+  <script src="../../dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
