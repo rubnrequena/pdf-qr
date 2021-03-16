@@ -21,14 +21,14 @@
     <h2 style="text-align: center;">QR Sign PDF</h2>
     <form class="card p-2" enctype="multipart/form-data" method="POST" action="/">
       <div class="input-group">
-        <input type="file" name="pdf" class="form-control" placeholder="PDF">
+        <input type="file" name="pdf" class="form-control" placeholder="PDF" required>
         <div class="input-group-append">
           <button type="submit" class="btn btn-secondary">Send</button>
         </div>
       </div>
       <div class="mb-3">
         <label for="qr">QR Payload <span class="text-muted">(Required)</span></label>
-        <input type="qr" name="payload" class="form-control" id="qr" placeholder="kubide.es">
+        <input type="qr" name="payload" class="form-control" id="qr" placeholder="kubide.es" required>
       </div>
       <div class="mb-3">
         <label class="label">Location:</label>
