@@ -14,9 +14,8 @@ export class AppService {
     return 'Hello World!';
   }
 
-  printQR(pdf: PdfDTO, qrOptions: QROptions = { page: 0, scale: 1, payload: 'Hello Kubide' }): Promise<Uint8Array> {
+  printQR(pdf: PdfDTO, qrOptions: QROptions = { page: 1, scale: 1, payload: 'Hello Kubide' }): Promise<Uint8Array> {
     return new Promise(async (resolve, reject) => {
-      console.log('qrOptions :>> ', qrOptions);
       const pdfBytes = fs.readFileSync(pdf.path);
       let pdfDoc: PDFDocument;
       try {
@@ -25,18 +24,16 @@ export class AppService {
         return reject(e)
       }
       const pages = pdfDoc.getPages();
-      const pageIndex = qrOptions.page >= 0 ? qrOptions.page - 1 : pages.length - Math.abs(qrOptions.page);
-      if (pageIndex < 0) {
-        return reject('La pagina seleccionada no existe')
+      const pageIndex = qrOptions.page > 0 ? qrOptions.page - 1 : pages.length - Math.abs(qrOptions.page);
+      if (pageIndex > pages.length - 1) {
+        throw new Error("Page do not exists");
       }
       const currentPage = pages[pageIndex];
 
       const pdfQRUrl = path.resolve(`assets/qr/${pdf.filename}.jpg`)
       await QRCode.toFile(pdfQRUrl, qrOptions.payload);
-
       const qrImageBytes = fs.readFileSync(pdfQRUrl)
       const qrImage = await pdfDoc.embedPng(qrImageBytes);
-
       const qrScale = qrImage.scale(Number(qrOptions.scale));
       let qrLocation: Point = {
         x: currentPage.getWidth() / 2 - qrScale.width / 2,
