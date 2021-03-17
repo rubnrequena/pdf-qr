@@ -4,12 +4,11 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { PdfDTO } from './dto/pdf.dto';
 import { Readable } from 'stream';
 import { Response } from 'express';
-import { Point, QROptions } from './interfaces/QROptions';
+import { QROptions } from './interfaces/QROptions';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
-
 
   @Post()
   @UseInterceptors(
@@ -21,16 +20,23 @@ export class AppController {
     })
   )
   async postPdf(@UploadedFile() pdf: PdfDTO, @Body() body: QROptions, @Res() res: Response) {
-    const pdfBytes = await this.appService.printQR(pdf, body);
-    const stream = new Readable();
+    this.appService.printQR(pdf, body).then(pdfBytes => {
+      const stream = new Readable();
 
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Length': pdfBytes.length,
-    });
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Length': pdfBytes.length,
+      });
 
-    stream.push(pdfBytes);
-    stream.push(null);
-    stream.pipe(res);
+      stream.push(pdfBytes);
+      stream.push(null);
+      stream.pipe(res);
+    }).catch((error: Error) => {
+      if (error.message.indexOf("encrypted") > -1)
+        res.send({ error: `Input document to '${pdf.originalname}' is encrypted` })
+      else
+        res.send({ error: error.message })
+    })
+
   }
 }

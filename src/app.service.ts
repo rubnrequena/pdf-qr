@@ -18,8 +18,12 @@ export class AppService {
     return new Promise(async (resolve, reject) => {
       console.log('qrOptions :>> ', qrOptions);
       const pdfBytes = fs.readFileSync(pdf.path);
-      const pdfDoc = await PDFDocument.load(pdfBytes);
-
+      let pdfDoc: PDFDocument;
+      try {
+        pdfDoc = await PDFDocument.load(pdfBytes)
+      } catch (e) {
+        return reject(e)
+      }
       const pages = pdfDoc.getPages();
       const pageIndex = qrOptions.page >= 0 ? qrOptions.page - 1 : pages.length - Math.abs(qrOptions.page);
       if (pageIndex < 0) {
